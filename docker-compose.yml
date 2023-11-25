@@ -25,13 +25,12 @@ services:
     container_name: "teapot"
     labels:
       - "traefik.enable=true"
-      - "traefik.http.middlewares.teapot-https.redirectscheme.scheme=https"
-      - "traefik.http.routers.teapot.entrypoints=web"
-      - "traefik.http.routers.teapot.rule=Host(`teapot.localhost`)"
-      - "traefik.http.routers.teapot.middlewares=teapot-https@docker"
-      - "traefik.http.routers.teapot-https.rule=Host(`teapot.localhost`)"
+      - "traefik.http.routers.teapot-https.rule=Host(`localhost`)"
+      - "traefik.http.routers.teapot-https.priority=1"
       - "traefik.http.routers.teapot-https.tls=true"
+      - "traefik.http.routers.teapot-https.tls.certResolver=dns"
       - "traefik.http.routers.teapot-https.entrypoints=web-secure"
+      - "traefik.http.services.teapot-https.loadbalancer.server.port=8080"
     volumes:
       - "./logs:/app/logs"
     networks:
